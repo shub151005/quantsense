@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+const BASE_URL = 'https://quantsense-backend.onrender.com'
 const WATCH_TICKERS = ['RELIANCE', 'TCS', 'INFY', 'HDFCBANK', 'WIPRO', 'ICICIBANK', 'SBIN', 'ITC']
 
 export default function PriceTicker() {
@@ -10,7 +10,7 @@ export default function PriceTicker() {
     try {
       const results = await Promise.allSettled(
         WATCH_TICKERS.map(ticker =>
-          axios.get(`http://127.0.0.1:8000/stock/info/${ticker}`)
+          axios.get(`https://quantsense-backend.onrender.com/stock/info/${ticker}`)
         )
       )
       const data = results
