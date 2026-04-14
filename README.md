@@ -1,4 +1,4 @@
-# QuantSense — AI-Powered Stock Intelligence Platform
+# QuantSense —  Stock Intelligence Platform
 
 > Know Before You Invest.
 
