@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-const BASE_URL = 'https://quantsense-backend.onrender.com'
+const BASE_URL = 'https://subh151005-quantsense-backend.hf.space'
 const WATCH_TICKERS = ['RELIANCE', 'TCS', 'INFY', 'HDFCBANK', 'WIPRO', 'ICICIBANK', 'SBIN', 'ITC']
 
 export default function PriceTicker() {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://quantsense-backend.onrender.com'
+const BASE_URL = 'https://subh151005-quantsense-backend.hf.space'
 
 export const signupUser = async (name, email, password) => {
   const response = await axios.post(`${BASE_URL}/auth/signup`, {

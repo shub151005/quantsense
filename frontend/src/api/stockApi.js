@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://quantsense-backend.onrender.com'
+const BASE_URL = 'https://subh151005-quantsense-backend.hf.space'
 
 export const analyzeStock = async (ticker) => {
   const response = await axios.get(`${BASE_URL}/stock/analyze/${ticker}`)

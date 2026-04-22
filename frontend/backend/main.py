@@ -16,7 +16,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "https://quantsense.vercel.app",
-        "https://subh151005-quantsense-backend.hf.space"
+        "https://quantsense-backend.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
