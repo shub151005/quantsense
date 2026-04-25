@@ -1,8 +1,8 @@
-# QuantSense —  Stock Intelligence Platform
+# QuantSense — AI-Powered Stock Intelligence Platform
 
 > Know Before You Invest.
 
-**Live Demo:** https://quantsense.vercel.app
+**🌐 Live Demo:** https://quantsense.vercel.app
 
 ---
 
@@ -10,46 +10,45 @@
 
 QuantSense is a full-stack AI-powered fintech platform that gives Indian retail investors institutional-grade stock intelligence in plain English. Instead of complex charts and jargon, it answers one simple question — *should I be worried about this stock right now?*
 
----
-
-## The Problem
-
-India has 130 million+ registered retail investors. Most of them open Zerodha or Groww, see a stock, and have no idea if it is a good time to buy, hold, or run. They rely on YouTube finance gurus and WhatsApp tips. That is gambling, not investing.
+India has 130 million+ registered retail investors. Most of them make investment decisions based on YouTube tips and WhatsApp forwards. QuantSense changes that.
 
 ---
 
-## The Solution
+## The Satta Score — Our Signature Feature
 
-QuantSense combines three AI layers into one signature score:
+A single number from 0 to 100 that tells you how speculative a stock is right now.
 
-### The Satta Score (0–100)
-Our original composite metric that tells you how speculative a stock is right now.
-- **0–30** → Safe. Fundamentally sound.
-- **31–60** → Moderate. Watch carefully.
-- **61–100** → High risk. Satta territory.
+| Score | Label | Meaning |
+|---|---|---|
+| 0–30 | 🟢 SAFE | Fundamentally sound |
+| 31–60 | 🟡 MODERATE | Watch carefully |
+| 61–100 | 🔴 HIGH RISK | Satta territory |
 
-### Three Intelligence Layers
+---
+
+## Three AI Intelligence Layers
 
 | Layer | Technology | What It Does |
 |---|---|---|
-| Price Forecast | Facebook Prophet | Predicts next 30 days of price movement |
-| Market Sentiment | VADER NLP + GNews | Reads 10 live news headlines and scores market mood |
-| Risk Simulation | Monte Carlo (10,000 runs) | Calculates probability of positive returns |
+| 📈 Price Forecast | Facebook Prophet | Predicts next 30 days of price movement with confidence intervals |
+| 📰 Market Sentiment | VADER NLP + GNews | Reads 10 live financial headlines and scores market mood |
+| 🎲 Risk Simulation | Monte Carlo (10,000 runs) | Calculates probability of positive returns |
 
 ---
 
 ## Features
 
-- Search any NSE/BSE or US stock by plain name
-- 30-day AI price forecast with confidence intervals
-- Real-time market sentiment from live financial news
-- Monte Carlo risk simulation with probability scores
-- Historical price chart with period toggle
-- EMA crossover backtest (Premium)
-- Flash news alerts for breaking events (Premium)
-- User accounts with watchlist and saved reports
-- Freemium model — free tier with premium upgrades
-- Live price ticker for top Indian stocks
+- 🔍 Search any NSE, BSE or US stock by plain name — no ticker knowledge needed
+- 📊 30-day AI price forecast with upper and lower confidence bands
+- 📰 Real-time market sentiment from live financial headlines
+- 🎲 Monte Carlo risk simulation with probability distribution chart
+- 📉 Historical price chart with 1W/1M/3M/6M/1Y toggle
+- 📡 Live price ticker showing top Indian stocks in real time
+- 🔒 EMA crossover backtest strategy (Premium)
+- ⚡ Flash news alerts for breaking market events (Premium)
+- 👤 User accounts with watchlist and saved reports
+- 💰 Freemium model — free tier with premium upgrades at ₹199/month
+- 📱 Mobile responsive design
 
 ---
 
@@ -57,12 +56,12 @@ Our original composite metric that tells you how speculative a stock is right no
 
 ### Backend
 - Python + FastAPI
-- PostgreSQL (Supabase)
+- Neon PostgreSQL (serverless)
 - SQLAlchemy ORM
 - JWT Authentication + bcrypt
-- yFinance (stock data)
-- Facebook Prophet (forecasting)
-- VADER Sentiment (NLP)
+- yFinance + Alpha Vantage (stock data)
+- Facebook Prophet (time series forecasting)
+- VADER Sentiment Analysis (NLP)
 - NumPy (Monte Carlo simulation)
 - GNews API (financial news)
 
@@ -75,9 +74,9 @@ Our original composite metric that tells you how speculative a stock is right no
 - Axios
 
 ### Deployment
-- Backend: Render
+- Backend: Hugging Face Spaces (Docker)
 - Frontend: Vercel
-- Database: Supabase (PostgreSQL)
+- Database: Neon PostgreSQL
 
 ---
 
@@ -85,19 +84,20 @@ Our original composite metric that tells you how speculative a stock is right no
 User searches "RELIANCE"
 ↓
 React Frontend (Vercel)
-↓ API call
-FastAPI Backend (Render)
+↓ REST API call
+FastAPI Backend (Hugging Face)
 ↓
-┌─────────────────┐
-│  yFinance       │ → Historical price data
-│  Prophet AI     │ → 30-day forecast
-│  VADER + GNews  │ → Sentiment score
-│  Monte Carlo    │ → Risk probability
-└─────────────────┘
+┌─────────────────────────┐
+│  Alpha Vantage + yFinance│ → Live stock data
+│  Facebook Prophet        │ → 30-day forecast
+│  VADER + GNews           │ → Sentiment score
+│  Monte Carlo (NumPy)     │ → Risk probability
+└─────────────────────────┘
 ↓
-Satta Score calculated
+Satta Score calculated (composite of all 3)
 ↓
-Results → Frontend Dashboard
+Full analysis → React Dashboard
+
 ---
 
 ## Local Development
@@ -105,8 +105,9 @@ Results → Frontend Dashboard
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
-- Supabase account
+- Neon or Supabase PostgreSQL account
 - GNews API key (gnews.io)
+- Alpha Vantage API key (alphavantage.co)
 
 ### Backend Setup
 ```bash
@@ -117,11 +118,13 @@ pip install -r requirements.txt
 ```
 
 Create `.env` file:
-DATABASE_URL=your_supabase_url
+DATABASE_URL=your_neon_or_supabase_url
 JWT_SECRET=your_secret_key
 JWT_ALGORITHM=HS256
 JWT_EXPIRE_MINUTES=10080
 GNEWS_API_KEY=your_gnews_key
+ALPHA_VANTAGE_KEY=your_alpha_vantage_key
+
 Run backend:
 ```bash
 uvicorn main:app --reload
@@ -140,26 +143,26 @@ npm run dev
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/stock/analyze/{ticker}` | Full analysis — master endpoint |
+| GET | `/stock/analyze/{ticker}` | Full AI analysis — master endpoint |
 | GET | `/stock/forecast/{ticker}` | 30-day Prophet forecast |
-| GET | `/stock/history/{ticker}` | Historical OHLCV data |
-| GET | `/stock/ema/{ticker}` | EMA backtest signals |
+| GET | `/stock/history/{ticker}` | Historical OHLCV price data |
+| GET | `/stock/ema/{ticker}` | EMA crossover backtest |
 | GET | `/sentiment/{ticker}` | VADER sentiment score |
-| GET | `/sentiment/market-news` | Live market headlines |
-| GET | `/risk/montecarlo/{ticker}` | Monte Carlo simulation |
+| GET | `/sentiment/market-news` | Live Indian market headlines |
+| GET | `/risk/montecarlo/{ticker}` | Monte Carlo risk simulation |
 | POST | `/auth/signup` | Register new user |
-| POST | `/auth/login` | Login and get JWT |
+| POST | `/auth/login` | Login and receive JWT |
 | GET | `/user/watchlist` | Get saved watchlist |
-| POST | `/user/watchlist/add` | Add to watchlist |
-| GET | `/user/reports` | Get saved reports |
+| POST | `/user/watchlist/add` | Add stock to watchlist |
+| GET | `/user/reports` | Get saved analysis reports |
 
 ---
 
 ## Monetization Model
 
-| Feature | Free | Premium |
+| Feature | Free | Premium ₹199/mo |
 |---|---|---|
-| Stock analysis | 3/day | Unlimited |
+| Stock searches | 3/day | Unlimited |
 | Satta Score | ✅ | ✅ |
 | 30-day forecast | ✅ | ✅ |
 | Sentiment analysis | ✅ | ✅ |
@@ -170,21 +173,22 @@ npm run dev
 | EMA Backtest | ❌ | ✅ |
 | Flash news alerts | ❌ | ✅ |
 
-**Premium: ₹199/month**
-**B2B API: ₹5,000–15,000/month**
-
 ---
 
 ## Built By
 
 **Subham Mazumdar**
 2nd Semester CSE Student — Assam Downtown University
+Guwahati, Assam, India
 
-Built session by session over 14 days as a portfolio and hackathon project.
+Built over 14 days as a portfolio and hackathon project — backend, ML models, frontend, and full deployment included.
 
 ---
 
 ## Disclaimer
 
-QuantSense provides data-driven insights for educational purposes only. This is not financial advice. Always do your own research before investing.
+QuantSense provides data-driven insights for educational purposes only. This is not financial advice. Always do your own research before making investment decisions.
 
+---
+
+⭐ If you found this useful, consider starring the repository!
