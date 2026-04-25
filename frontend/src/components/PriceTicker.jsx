@@ -10,7 +10,7 @@ export default function PriceTicker() {
     try {
       const results = await Promise.allSettled(
         WATCH_TICKERS.map(ticker =>
-          axios.get(`https://quantsense-backend.onrender.com/stock/info/${ticker}`)
+          axios.get(`https://subh151005-quantsense-backend.hf.space/stock/info/${ticker}`)
         )
       )
       const data = results
