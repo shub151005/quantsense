@@ -1,65 +1,40 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-const BASE_URL = 'https://subh151005-quantsense-backend.hf.space'
-const WATCH_TICKERS = ['RELIANCE', 'TCS', 'INFY', 'HDFCBANK', 'WIPRO', 'ICICIBANK', 'SBIN', 'ITC']
+const STATIC_PRICES = [
+  { name: 'RELIANCE', price: '₹1,327' },
+  { name: 'TCS', price: '₹3,421' },
+  { name: 'INFY', price: '₹1,292' },
+  { name: 'HDFCBANK', price: '₹1,810' },
+  { name: 'WIPRO', price: '₹257' },
+  { name: 'ICICIBANK', price: '₹1,321' },
+  { name: 'SBIN', price: '₹793' },
+  { name: 'ITC', price: '₹417' },
+]
 
 export default function PriceTicker() {
-  const [prices, setPrices] = useState([])
-
-  const fetchPrices = async () => {
-    try {
-      const results = await Promise.allSettled(
-        WATCH_TICKERS.map(ticker =>
-          axios.get(`https://subh151005-quantsense-backend.hf.space/stock/info/${ticker}`)
-        )
-      )
-      const data = results
-        .filter(r => r.status === 'fulfilled')
-        .map(r => r.value.data)
-        .filter(d => d.current_price)
-      setPrices(data)
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  useEffect(() => {
-    fetchPrices()
-    const interval = setInterval(fetchPrices, 60000)
-    return () => clearInterval(interval)
-  }, [])
-
-  if (prices.length === 0) return null
-
-  const doubled = [...prices, ...prices]
+  const doubled = [...STATIC_PRICES, ...STATIC_PRICES]
 
   return (
-    <div
-      style={{
-        width: '100%',
-        overflow: 'hidden',
-        backgroundColor: '#0e2830',
-        borderBottom: '1px solid rgba(2,127,147,0.2)',
-        padding: '6px 0',
+    <div style={{
+      width: '100%',
+      overflow: 'hidden',
+      backgroundColor: '#0e2830',
+      borderBottom: '1px solid rgba(2,127,147,0.2)',
+      padding: '6px 0',
+      display: 'flex',
+      alignItems: 'center',
+    }}>
+      <div style={{
         display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          gap: '40px',
-          whiteSpace: 'nowrap',
-          animation: 'priceticker 30s linear infinite',
-        }}
-      >
+        gap: '40px',
+        whiteSpace: 'nowrap',
+        animation: 'priceticker 30s linear infinite',
+      }}>
         {doubled.map((stock, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <span style={{ color: '#8888aa', fontSize: '11px', fontFamily: 'monospace' }}>
-              {stock.name?.split(' ')[0].toUpperCase()}
+              {stock.name}
             </span>
             <span style={{ color: '#f78b04', fontSize: '11px', fontFamily: 'monospace', fontWeight: 500 }}>
-              ₹{stock.current_price?.toLocaleString('en-IN')}
+              {stock.price}
             </span>
             <span style={{ color: '#027f93', fontSize: '10px' }}>●</span>
           </div>
