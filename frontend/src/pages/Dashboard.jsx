@@ -13,6 +13,9 @@ import {
 } from 'recharts'
 import axios from 'axios'
 
+const MARKET_DATA_PROVIDER_ERROR = 'We are currently experiencing issues with our market data provider due to updated API terms and conditions. Our team is working on a fix. Please try again later or contact support.'
+const MARKET_DATA_PROVIDER_SUBTITLE = 'Affected: Live price data and historical charts'
+
 export default function Dashboard() {
   const { ticker } = useParams()
   const navigate = useNavigate()
@@ -30,7 +33,7 @@ export default function Dashboard() {
         const result = await analyzeStock(ticker)
         setData(result)
       } catch (err) {
-        setError('Could not analyze this stock. Please check the ticker and try again.')
+        setError(MARKET_DATA_PROVIDER_ERROR)
       } finally {
         setLoading(false)
       }
@@ -67,9 +70,14 @@ export default function Dashboard() {
 
 function ErrorState({ error, navigate }) {
   return (
-    <div className="min-h-screen bg-br-base flex flex-col items-center justify-center gap-4">
-      <AlertCircle size={48} className="text-br-crimson" />
-      <p className="text-white text-lg">{error}</p>
+    <div className="min-h-screen bg-br-base flex flex-col items-center justify-center gap-4 px-4">
+      <div className="max-w-2xl bg-br-surface border border-br-amber/30 rounded-2xl p-6 text-center shadow-[0_0_40px_rgba(247,139,4,0.08)]">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-br-amber/10 border border-br-amber/30 flex items-center justify-center">
+          <AlertCircle size={28} className="text-br-amber" />
+        </div>
+        <p className="text-br-amber text-lg font-medium leading-relaxed">{error}</p>
+        <p className="text-gray-400 text-sm mt-3">{MARKET_DATA_PROVIDER_SUBTITLE}</p>
+      </div>
       <button
         onClick={() => navigate('/')}
         className="bg-br-amber text-br-base px-6 py-2 rounded-full text-sm font-medium"
