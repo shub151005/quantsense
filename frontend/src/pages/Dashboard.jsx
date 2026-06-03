@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useParams, useNavigate } from 'react-router-dom'
-import { analyzeStock, getStockHistory, getEMABacktest, addToWatchlist, saveReport } from '../api/stockApi'
+import { getStockHistory, getEMABacktest, addToWatchlist, saveReport } from '../api/stockApi'
 import {
   TrendingUp, TrendingDown, Bookmark, AlertCircle,
   Zap, Activity, Radio, GitBranch, Lock
@@ -26,19 +26,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (authLoading) return
-    const fetchData = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const result = await analyzeStock(ticker)
-        setData(result)
-      } catch (err) {
-        setError(MARKET_DATA_PROVIDER_ERROR)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
+    setData(null)
+    setError(MARKET_DATA_PROVIDER_ERROR)
+    setLoading(false)
   }, [ticker, authLoading])
 
   if (authLoading) return <LoadingState ticker={ticker} />
